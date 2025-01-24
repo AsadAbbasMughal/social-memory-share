@@ -1,0 +1,17 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.switchToSignup{
+    color:green;
+    font-weight: 600;
+    cursor: pointer;
+    
+}
+.switchToSignip{
+    color:green;
+    font-weight: 600;
+    cursor: pointer;
+    
+}
