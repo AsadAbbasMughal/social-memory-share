@@ -58,3 +58,12 @@ button:hover {
 .gallery img:hover {
     transform: scale(1.05);
 }
+/* ------------------------------- */
+
+/* #signupContainer{
+    display: block;
+} */
+
+#signinpContainer{
+    display: none;
+}

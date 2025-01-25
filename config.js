@@ -1,3 +1,4 @@
+ gallery-feature
 // console.log(supabase)
 
 const { createClient } = supabase;
@@ -8,3 +9,11 @@ const supabaseKey =
 const supabaseClient = createClient(supabaseUrl, supabaseKey);
 
 window.supabase = supabaseClient;
+
+
+
+// console.log(supabase);
+
+
+
+
