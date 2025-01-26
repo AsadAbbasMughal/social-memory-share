@@ -9,9 +9,12 @@
     cursor: pointer;
     
 }
-.switchToSignip{
+.switchToSignin{
     color:green;
     font-weight: 600;
     cursor: pointer;
     
+}
+.d-none{
+    display:none
 }

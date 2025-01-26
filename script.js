@@ -1,6 +1,0 @@
-let signupEmail = document.querySelector("#signupEmail")
-let signupPassword = document.querySelector("#signupPassword")
-let signupBtn = document.querySelector("#signupBtn")
-let signupContainer = document.querySelector("#signupContainer")
-let switchToSignup = document.querySelector(".switchToSignup")
-let switchToSignip = document.querySelector(".switchToSignip")

@@ -35,3 +35,14 @@ img {
     color: var(--primary-color);
     margin: 5px 0px 20px 0px;
 }
+.fa-upload{
+    background-color: rgb(155, 155, 152);
+    padding: 10px;
+    font-size: 25px;
+    border-radius: 10px;
+}
+
+.fa-upload:hover{
+    background-color: rgb(132, 132, 129);
+    cursor: pointer;
+}
