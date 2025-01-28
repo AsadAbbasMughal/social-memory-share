@@ -17,7 +17,7 @@ let signupPass = document.querySelector("#signupPass");
 let signupBtn = document.querySelector("#signupBtn");
 
 let signinEmail = document.querySelector("#signinEmail");
-let signiinPass = document.querySelector("#signinPass");
+let signinPass = document.querySelector("#signinPass");
 let signinBtn = document.querySelector("#signinBtn");
 
 let userSignup = async (e) => {
@@ -70,10 +70,11 @@ let userSignup = async (e) => {
   const { data: usersData, Dataerror: usersError } = await supabase
     .from("users")
     .insert({
-      uid: data.user.id,
+      userId: data.user.id,
       name: name,
       email: email,
-    });
+    })
+    .select(); 
 
   if (usersError) {
     console.log("userError ", usersError);
@@ -98,7 +99,7 @@ let userSignup = async (e) => {
 const userSignIn =async (e) =>{
     e.preventDefault()
     let signinEmailValue = signinEmail.value;
-    let signinpassValue = signiinPass.value;
+    let signinpassValue = signinPass.value;
 
     const { data, error } = await supabase.auth.signInWithPassword({
         email: signinEmailValue,

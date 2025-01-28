@@ -53,5 +53,9 @@ const deleteUserAcc = async () => {
 
 };
 
-logoutBtn.addEventListener("click", logoutUser);
-deleteBtn.addEventListener("click", deleteUserAcc);
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", logoutUser);
+}
+if (deleteBtn) {
+  deleteBtn.addEventListener("click", deleteUserAcc);
+}
