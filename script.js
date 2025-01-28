@@ -81,8 +81,16 @@ let userSignup = async (e) => {
     return;
   }
   if (usersData) {
-    console.log("users data ", usersData);
+    console.log(usersData);
+    console.log("users data ", usersData[0].name);
   }
+
+  // let currentuserData = {
+  //   userName : usersData[0].name,
+  //   userEmial : usersData[0].email
+  // }
+
+  // localStorage.setItem("currentUser",JSON.stringify(currentuserData))
 
   if (data) {
     console.log("data signup --->", data);
@@ -116,6 +124,7 @@ const userSignIn =async (e) =>{
         console.log('signin data', data);
         Swal.fire("signIn successfully!");
 
+        localStorage.setItem('currentuserEmail',signinEmailValue)
         window.location.href = '/dashboard.html'
         
       }
