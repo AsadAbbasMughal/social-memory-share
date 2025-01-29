@@ -10,8 +10,8 @@ const switchToSignup = document.querySelector(".switchToSignup")
 const switchToSignip = document.querySelector(".switchToSignip")
 
 async function signup(){
+    event.preventDefault();
     try {
-        event.preventDefault();
         const { data, error } = await supabase.auth.signUp({
             email: signupEmail.value,
             password: signupPassword.value,
@@ -40,8 +40,8 @@ async function signup(){
 };
 
 async function signin(){
+    event.preventDefault();
     try {
-        event.preventDefault();
         const { data, error } = await supabase.auth.signInWithPassword({
             email: signinEmail.value,
             password: signinpPassword.value,

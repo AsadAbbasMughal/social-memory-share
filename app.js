@@ -18,9 +18,8 @@ async function checkSession() {
           }
       }
   
-      console.log(session);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }
   
