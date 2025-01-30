@@ -10,7 +10,8 @@ async function checkSession() {
   
       if(session) {
           if(isAuthPage) {
-              window.location.href = "/gallery.html";
+            console.log(session)
+              // window.location.href = "/gallery.html";
           }
       } else {
           if(!isAuthPage) {
