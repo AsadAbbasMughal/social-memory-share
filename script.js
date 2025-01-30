@@ -15,6 +15,7 @@ let signupName = document.querySelector("#signupName");
 let signupEmail = document.querySelector("#signupEmail");
 let signupPass = document.querySelector("#signupPass");
 let signupBtn = document.querySelector("#signupBtn");
+let signupImg = document.querySelector("#signupImg");
 
 let signinEmail = document.querySelector("#signinEmail");
 let signinPass = document.querySelector("#signinPass");
@@ -25,12 +26,15 @@ let userSignup = async (e) => {
   let name = signupName.value;
   let email = signupEmail.value;
   let pass = signupPass.value;
+  let uploadedFile = signupImg.files[0]
+  let filePath =`public/${encodeURIComponent(uploadedFile.name)}`
 
   const { data: existingUser, error: existingError } = await supabase
-    .from("users")
-    .select("email")
-    .eq("email", email)
-    .single(); 
+  .from("users")
+  .select("email")
+  .eq("email", email)
+  .single();
+
    
 
     // if (existingError && existingError.code !== "PGRST116") {  // Ignore if no row found
@@ -49,8 +53,11 @@ let userSignup = async (e) => {
 
   //signup user
 
-  if(!name || !email || !pass){
-      // Swal.fire("Enter the all fields!");
+  if(!name || !email || !pass || !signupImg){
+      Swal.fire("Enter the all fields!");
+      console.log("Enter the all fields!");
+      return
+      
     }
 
   const { data, error } = await supabase.auth.signUp({
@@ -65,7 +72,34 @@ let userSignup = async (e) => {
   }
 
   //   if(!error){
-  console.log(data.user.id);
+  // console.log(data.user.id);
+
+  // const avatarFile = event.target.files[0]
+const { data: userImgData , error: userImgError } = await supabase
+  .storage
+  .from('userImg')
+  .upload(filePath, uploadedFile, {
+    cacheControl: '3600',
+    upsert: false
+  })
+
+  if (userImgError) {
+    console.error('Error uploading image:', userImgError);
+  } else {
+    console.log('Image uploaded successfully:', userImgData)
+
+
+  const { data: getUrlData,  error: urlError } = supabase
+  .storage
+  .from('userImg')
+  .getPublicUrl(filePath);
+
+  if (urlError) {
+    console.error('Error getting public URL:', urlError);
+  } else {
+    console.log('Public URL:',  getUrlData.publicUrl);
+    // You can now save this public URL to your user table or do other operations.
+ 
 
   const { data: usersData, Dataerror: usersError } = await supabase
     .from("users")
@@ -73,6 +107,7 @@ let userSignup = async (e) => {
       userId: data.user.id,
       name: name,
       email: email,
+      imgUrl: getUrlData.publicUrl
     })
     .select(); 
 
@@ -84,7 +119,11 @@ let userSignup = async (e) => {
     console.log(usersData);
     console.log("users data ", usersData[0].name);
   }
+}
 
+
+
+}
   // let currentuserData = {
   //   userName : usersData[0].name,
   //   userEmial : usersData[0].email

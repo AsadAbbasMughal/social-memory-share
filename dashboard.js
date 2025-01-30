@@ -1,6 +1,7 @@
 let logoutBtn = document.querySelector("#logoutBtn");
 let deleteBtn = document.querySelector("#deleteBtn");
 let welcomeUser = document.getElementById('welcomeUser')
+let userProfileImg = document.getElementById('userImg')
 
 
 const logoutUser = async () => {
@@ -75,12 +76,13 @@ async function showUserInfo() {
 
       if(data){
         console.log(data);
-        data.map(function (uName){
+        data.map(function (user){
           // console.log(uName.email);
-          if(uName.email == currentuserEmai){
+          if(user.email == currentuserEmai){
             // console.log("matched" );
-            console.log(uName.name);
-            welcomeUser.innerHTML = uName.name
+            console.log(user.name);
+            welcomeUser.innerHTML = user.name
+            userProfileImg.src = user.imgUrl
           }
         })
       }
