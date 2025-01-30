@@ -1,4 +1,6 @@
 const galleryContainer = document.querySelector("#galleryContainer");
+const closeModal = document.querySelector(".closeModal");
+
 const activeUserData = JSON.parse(localStorage.getItem("activeUserData"));
 console.log(activeUserData);
 const showMemoriesData = async () => {
@@ -8,7 +10,49 @@ const showMemoriesData = async () => {
     if (data) {
       console.log(data);
       try {
-        
+        const { data : usersData, error : usersError } = await supabase.from("users").select();
+        if(usersError) throw usersError;
+        if(usersData){
+          // console.log(usersData)
+          const usersMap = {};
+          usersData.forEach((user)=>{
+            usersMap[user.userId] = user;
+          })
+          console.log(data);
+          console.log(usersMap)
+          galleryContainer.innerHTML = ""
+          console.log(data)
+          data.forEach((newData) => {
+            console.log(newData);
+          });
+          console.log(data);
+          data.forEach((memory)=>{
+            let activeUser = usersMap[memory.userId];
+            console.log(activeUser)
+            let activeUserPost = false;
+            if(activeUser.userId === activeUserData.userId){
+              activeUserPost = true;
+            }
+            console.log(activeUserPost)
+            galleryContainer.innerHTML += `<div class="col-lg-4 col-sm-6 col-12  p-2">
+        <div class="main border rounded p-3">
+          <div class="thumbnail img-responsive border">
+            <a href="#" title="Image 1"><img class="img-fluid " style="height : 200px; width : 100%; object-fit : contain"
+                src="${memory.imageUrl}">
+            </a>
+          </div>
+          <h5>${memory.title}</h5>
+          <div class="reaction_btn d-flex justify-content-between">
+           <div class='likes'>
+            <button>👍</button>
+            <button>👎</button>
+            </div>
+            ${activeUserPost ? "<button>delete</button>": ''}
+          </div>
+        </div>
+      </div>`;
+          })
+        }
 
       } catch (error) {
         
@@ -85,6 +129,8 @@ addMemory?.addEventListener("click", async () => {
                                 console.log(updatedUrl)
                                 memoryImg.value = '';
                                 memoryTitle.value = '';
+                                closeModal.click()
+                                showMemoriesData()
                               }
 
                         } catch (error) {
