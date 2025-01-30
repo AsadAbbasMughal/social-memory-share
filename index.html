@@ -13,6 +13,7 @@
 <body>
 
     <div class="container" id="container">
+        
         <div class="form-container sign-up">
             <form>
                 <h1>Create Account</h1>
@@ -22,10 +23,31 @@
                     <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
                     <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
                 </div> -->
+
+                
+
+
+
                 <span>or use your email for registeration</span>
                 <input type="text" placeholder="Name" id="signupName">
                 <input type="email" placeholder="Email" id="signupEmail">
-                <input type="password" placeholder="Password" id="signupPass">
+                <!-- <div id="profileImageSection" style=" text-align: center; margin-bottom: 1.5rem;">
+                    <label for="profileImage" style="cursor: pointer;">
+                      <img 
+                        src="https://via.placeholder.com/100" 
+                        id="profileImagePreview" 
+                        alt="Profile Image" 
+                        style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #6a11cb;"
+                      /> -->
+                      <input 
+                        type="file" 
+                        id="profileImaged" 
+                        accept="image/*" 
+                      />
+                      <!-- <p style="margin-top: 0.5rem; color: #6a11cb; font-size: 0.9rem;">Upload Profile Image</p>
+                    </label>
+                  </div>     -->
+                              <input type="password" placeholder="Password" id="signupPass">
                 <button id="signupBtn">Sign Up</button>
             </form>
         </div>
@@ -61,10 +83,207 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
      <script type="module" src="config.js"></script>
-    <script type="module" src="script.js"></script>
+    <!-- <script type="module" src="script.js"></script> -->
+    <script>
+
+//         profileImageInput.addEventListener('change', (e) => {
+//     const file = e.target.files[0];
+//     if (file) {
+//       const reader = new FileReader();
+//       reader.onload = (e) => {
+//         profileImagePreview.src = e.target.result;
+//       };
+//       reader.readAsDataURL(file);
+//     }
+//   });
+// });
+
+const container = document.getElementById("container");
+const registerBtn = document.getElementById("register");
+const loginBtn = document.getElementById("login");
+
+if (registerBtn) {
+  registerBtn.addEventListener("click", () => {
+    container.classList.add("active");
+  });
+}
+
+if (loginBtn) {
+  loginBtn.addEventListener("click", () => {
+    container.classList.remove("active");
+  });
+}
+
+
+// // ---------------------------------------------------
+let signupName = document.querySelector("#signupName");
+let signupEmail = document.querySelector("#signupEmail");
+let signupPass = document.querySelector("#signupPass");
+let signupBtn = document.querySelector("#signupBtn");
+
+let signinEmail = document.querySelector("#signinEmail");
+let signinPass = document.querySelector("#signinPass");
+let signinBtn = document.querySelector("#signinBtn");
+
+const profileUsername = document.getElementById('signupName')
+  const profileImage = document.getElementById('profileImaged')
+  
+
+
+
+let userSignup = async (e) => {
+  e.preventDefault();
+
+  let name = signupName.value;
+  let email = signupEmail.value;
+  let pass = signupPass.value;
+  let profileImage = document.querySelector("#profileImaged").files[0];
+
+  if (!name || !email || !pass || !profileImage) {
+    Swal.fire("All fields are required");
+    return;
+  }
+
+  try {
+    // Check if the user already exists
+    const { data: existingUser, error: existingError } = await supabase
+      .from("users")
+      .select("email")
+      .eq("email", email)
+      .single();
+
+    if (existingError && existingError.code !== "PGRST116") { // PGRST116 means "no rows found"
+      console.error("Error checking existing user:", existingError);
+      Swal.fire("Error checking existing user");
+      return;
+    }
+
+    if (existingUser) {
+      Swal.fire("User already exists");
+      return;
+    }
+
+    // Upload the profile image
+    const fileName = `public/${Date.now()}_${profileImage.name}`;
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from("profile-images")
+      .upload(fileName, profileImage, {
+        cacheControl: "3600",
+        upsert: false,
+      });
+
+    if (uploadError) {
+      console.error("Error uploading profile image:", uploadError);
+      Swal.fire("Error uploading profile image");
+      return;
+    }
+
+    // Get the public URL of the uploaded image
+    const { data: publicURLData } = supabase.storage
+      .from("profile-images")
+      .getPublicUrl(fileName);
+
+    const publicURL = publicURLData.publicUrl;
+    if (!publicURL) {
+      throw new Error("Failed to get public URL of image");
+    }
+
+    // Sign up the user with Supabase Auth
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email: email,
+      password: pass,
+    });
+
+    if (authError) {
+      console.error("Error signing up:", authError);
+      Swal.fire(authError.message);
+      return;
+    }
+
+    console.log("User signed up successfully. User ID:", authData.user.id);
+
+    // Insert the user data into the "users" table
+    const { error: usersError } = await supabase
+      .from("users")
+      .insert({
+        userId: authData.user.id,
+        name: name,
+        email: email,
+        profileImage: publicURL,
+      });
+
+    if (usersError) {
+      console.error("Error inserting user data:", usersError);
+      Swal.fire("Error inserting user data");
+      return;
+    }
+
+    // Clear the form fields
+    signupName.value = "";
+    signupEmail.value = "";
+    signupPass.value = "";
+    document.getElementById("profileImaged").value = "";
+
+    // Show success message
+    Swal.fire("User signed up successfully!");
+    // window.location.href = "/dashboard.html"; // Redirect if needed
+
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    Swal.fire("An unexpected error occurred");
+  }
+};
+
+const userSignIn =async (e) =>{
+    e.preventDefault()
+    let signinEmailValue = signinEmail.value;
+    let signinpassValue = signinPass.value;
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+        email: signinEmailValue,
+        password: signinpassValue,
+      })
+
+      if(error){
+        console.log('signin error', error.message);
+        Swal.fire("Signin error", error.message);
+        return
+        
+      } else {
+
+      }
+      if(data){
+        console.log('signin data', data);
+        Swal.fire("signIn successfully!");
+
+        localStorage.setItem('currentuserEmail',signinEmailValue)
+        window.location.href = 'dashboard.html' 
+        
+      }
+
+
+      
+      signinEmail.value = "";
+      signinPass.value = "";
+      
+}
+
+if(signupBtn) {
+  signupBtn.addEventListener("click", userSignup);
+}
+
+if(signinBtn)  {
+  signinBtn.addEventListener("click", userSignIn);
+}
+// signupBtn.addEventListener("click", userSignup);
+// signinBtn.addEventListener("click", userSignIn);
+
+
+    </script>
 </body>
 
 </html>

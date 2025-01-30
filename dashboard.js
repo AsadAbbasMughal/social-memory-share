@@ -5,7 +5,7 @@ let welcomeUser = document.getElementById('welcomeUser')
 
 const logoutUser = async () => {
   const {
-    data: { user },
+    data:  user ,
     error: userError,
   } = await supabase.auth.getUser();
 
@@ -19,13 +19,12 @@ const logoutUser = async () => {
     console.error("Error signing out:", error);
     return;
   }
-
+  
   console.log("Signed out successfully!", data);
-
+  
   // Swal.fire("Signed out successfully!")
   window.location.href = "/";
 };
-
 
 // ---------------------------------------------------------
 
@@ -62,32 +61,32 @@ if (deleteBtn) {
   deleteBtn.addEventListener("click", deleteUserAcc);
 }
 
-let currentuserEmai = localStorage.getItem('currentuserEmail')
-console.log(currentuserEmai);
+// let currentuserEmai = localStorage.getItem('currentuserEmail')
+// console.log(currentuserEmai);
 
-async function showUserInfo() {
-  try {
-    const { data, error } = await supabase
-      .from('users')
-      .select()
+// async function showUserInfo() {
+//   try {
+//     const { data, error } = await supabase
+//       .from('users')
+//       .select()
 
-      if(error) throw error
+//       if(error) throw error
 
-      if(data){
-        console.log(data);
-        data.map(function (uName){
-          // console.log(uName.email);
-          if(uName.email == currentuserEmai){
-            // console.log("matched" );
-            console.log(uName.name);
-            welcomeUser.innerHTML = uName.name
-          }
-        })
-      }
-  } catch (error) {
-    console.log(error);
-  }
-}
+//       if(data){
+//         console.log(data);
+//         data.map(function (uName){
+//           // console.log(uName.email);
+//           if(uName.email == currentuserEmai){
+//             // console.log("matched" );
+//             console.log(uName.name);
+//             welcomeUser.innerHTML = uName.name
+//           }
+//         })
+//       }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 
 
-window.onload = showUserInfo
+// window.onload = showUserInfo
