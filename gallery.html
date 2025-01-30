@@ -5,17 +5,66 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <link rel="stylesheet" href="gallery.css">
 
   <!-- bootstrap css cdn -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+      .card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+    </style>
 </head>
 
 <body>
-  <div class="container py-5">
+  <div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary  ">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Navbar</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            
+              
+              <li class="nav-item dropdown">
+                
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+              </li>
+             
+            </ul>
+            <form class="d-flex gap-3" onsubmit="event.preventDefault()">
+                
+              
+              <button class="btn btn-outline-danger" type="submit" id="logoutBtn">Logout Account</button>
+            </form>
+          </div>
+        </div>
+      </nav>    
+</div>
+  <!-- <div class="container py-5">
     <header class="d-flex justify-content-end py-3">
-      <button class="">Add memory</button>
+      <input 
+      type="file" 
+      id="profileImage" 
+      accept="image/*" 
+      />
+      <button class="" id="uploadbtn">Add memory</button>
     </header>
     <div class="row gap-4 justify-content-between">
       <div class="col-lg-12 border row justify-content-between p-3">
@@ -36,8 +85,15 @@
       
       
     </div>
-  </div>
+  </div> -->
 
+  <div class="conatiner">
+    <div class="row m-4 " id="gallery">
+     
+      </div>
+    <!--  card for user details -->
+      
+  </div>
 
 
   <!--  bootstrap js cdn -->
@@ -50,8 +106,21 @@
     crossorigin="anonymous"></script>
 
     <script type="module" src="config.js"></script>
-    <script type="module" src="app.js"></script>
+    <!-- <script type="module" src="app.js"></script> -->
+    <script type="module" src="dashboard.js"></script>
     <script type="module" src="script.js"></script>
+
+    <script>
+      // const logoutuser = async () => {
+      //   const { error } = await supabase.auth.signOut()
+      //   console.log(error);
+        
+      // }
+      // const logoutBtn = document.getElementById('logoutBtn')
+      // logoutBtn.addEventListener('click', logoutuser)
+
+
+    </script>
 </body>
 
 </html>
