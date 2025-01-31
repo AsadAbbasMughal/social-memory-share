@@ -9,3 +9,36 @@ AOS.init({
   anchorPlacement: 'top-bottom', // defines which position of the element regarding to window should trigger the animation
 
 });
+
+// document.getElementById("toggleDarkMode").addEventListener("click", () => {
+//   document.body.classList.toggle("dark-mode");
+
+//   // Save preference in localStorage
+//   if (document.body.classList.contains("dark-mode")) {
+//       localStorage.setItem("darkMode", "enabled");
+//   } else {
+//       localStorage.setItem("darkMode", "disabled");
+//   }
+// });
+
+// // Check user preference on load
+// if (localStorage.getItem("darkMode") === "enabled") {
+//   document.body.classList.add("dark-mode");
+// }
+
+const toggleTheme = () => {
+  let currentTheme = document.documentElement.getAttribute("data-theme");
+  
+  if (currentTheme === "dark") {
+      document.documentElement.setAttribute("data-theme", "light");
+      localStorage.setItem("theme", "light");
+  } else {
+      document.documentElement.setAttribute("data-theme", "dark");
+      localStorage.setItem("theme", "dark");
+  }
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = localStorage.getItem("theme") || "light";
+  document.documentElement.setAttribute("data-theme", savedTheme);
+});

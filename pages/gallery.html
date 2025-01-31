@@ -11,112 +11,197 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+
   <!-- supabase cdn -->
   <script src="
     https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.48.1/dist/umd/supabase.min.js
     "></script>
+    <style>
+      .main {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: var(--c-bg, #fff);
+    color: var(--c-text, #212529);
+}
+
+.main:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.thumbnail img {
+    /* border-radius: 10px; */
+    transition: transform 0.3s ease;
+}
+
+.thumbnail:hover img {
+    transform: scale(1.05);
+}
+
+.reaction_btn {
+    margin-top: 10px;
+}
+
+.reaction {
+    background: var(--c-brand, #4e57d4);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.reaction:hover {
+    background: var(--c-brand-light, #6970dd);
+}
+
+.like-btn.active {
+    background: #28a745 !important;
+}
+
+.dislike-btn.active {
+    background: #dc3545 !important;
+}
+
+.thumbnail img {
+    width: 100%;
+    height: 200px; /* Adjust this to a fixed height */
+    object-fit: cover; /* Crops image to fit */
+    border-radius: 10px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.main {
+    height: 100%; /* Ensures all cards take up full height */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Ensures buttons stay at the bottom */
+}
+
+
+    </style>
 </head>
 
 <body>
-  <div class="container my-3">
-    <header class="d-flex justify-content-end">
-      <button id="addMemoryBtn" class="btn btn-lg show-modal" data-toggle="modal" data-target="#myModal" >Capture Moment</button>
-    </header>
-    <hr>
-    <div class="row py-2 justify-content-center" id="galleryContainer">
-      <div class="col-lg-4 col-sm-6 col-12  p-2">
-        <div class="main border rounded p-3">
-          <div class="thumbnail img-responsive">
-            <a href="#" title="Image 1"><img class="img-fluid"
-                src="https://images.unsplash.com/photo-1494719019271-7bfff81660d2?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=74496a215491b1529d6702f146901970&auto=format&fit=crop&w=500&q=60">
-            </a>
-          </div>
-          <h5>title goes here</h5>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur sequi omnis id odit. Optio, quis.</p>
-          <div class="reaction_btn">
-            <button>👍</button>
-            <button>👎</button>
-          </div>
-        </div>
-      </div>
-      <!-- <div class="col-lg-4 col-sm-6 col-12  p-2">
-        <div class="main border rounded p-3">
-          <div class="thumbnail img-responsive">
-            <a href="#" title="Image 1"><img class="img-fluid"
-                src="https://images.unsplash.com/photo-1494719019271-7bfff81660d2?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=74496a215491b1529d6702f146901970&auto=format&fit=crop&w=500&q=60">
-            </a>
-          </div>
-          <h5>title goes here</h5>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur sequi omnis id odit. Optio, quis.</p>
-          <div class="reaction_btn">
-            <button>👍</button>
-            <button>👎</button>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4 col-sm-6 col-12  p-2">
-        <div class="main border rounded p-3">
-          <div class="thumbnail img-responsive">
-            <a href="#" title="Image 1"><img class="img-fluid"
-                src="https://images.unsplash.com/photo-1494719019271-7bfff81660d2?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=74496a215491b1529d6702f146901970&auto=format&fit=crop&w=500&q=60">
-            </a>
-          </div>
-          <h5>title goes here</h5>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur sequi omnis id odit. Optio, quis.</p>
-          <div class="reaction_btn">
-            <button>👍</button>
-            <button>👎</button>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4 col-sm-6 col-12  p-2">
-        <div class="main border rounded p-3">
-          <div class="thumbnail img-responsive">
-            <a href="#" title="Image 1"><img class="img-fluid"
-                src="https://images.unsplash.com/photo-1494719019271-7bfff81660d2?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=74496a215491b1529d6702f146901970&auto=format&fit=crop&w=500&q=60">
-            </a>
-          </div>
-          <h5>title goes here</h5>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur sequi omnis id odit. Optio, quis.</p>
-          <div class="reaction_btn">
-            <button>👍</button>
-            <button>👎</button>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4 col-sm-6 col-12  p-2">
-        <div class="main border rounded p-3">
-          <div class="thumbnail img-responsive">
-            <a href="#" title="Image 1"><img class="img-fluid"
-                src="https://images.unsplash.com/photo-1494719019271-7bfff81660d2?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=74496a215491b1529d6702f146901970&auto=format&fit=crop&w=500&q=60">
-            </a>
-          </div>
-          <h5>title goes here</h5>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur sequi omnis id odit. Optio, quis.</p>
-          <div class="reaction_btn">
-            <button>👍</button>
-            <button>👎</button>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4 col-sm-6 col-12  p-2">
-        <div class="main border rounded p-3">
-          <div class="thumbnail img-responsive">
-            <a href="#" title="Image 1"><img class="img-fluid"
-                src="https://images.unsplash.com/photo-1494719019271-7bfff81660d2?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=74496a215491b1529d6702f146901970&auto=format&fit=crop&w=500&q=60">
-            </a>
-          </div>
-          <h5>title goes here</h5>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur sequi omnis id odit. Optio, quis.</p>
-          <div class="reaction_btn">
-            <button>👍</button>
-            <button>👎</button>
-          </div>
-        </div>
-      </div> -->
 
-
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container">
+      <!-- User Profile Image & Name -->
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img id="userImg" src="AsadImg.jpg" alt="User Profile" class="rounded-circle border border-light me-2"
+          style="width: 45px; height: 45px; object-fit: cover;">
+        <span id="welcomeUser" class="fw-bold text-light">Welcome, Asad!</span>
+      </a>
+  
+      <!-- Navbar Toggler for Mobile -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <!-- Navbar Links & Profile Dropdown -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/pages/about.html">About</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown">
+              Services
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Web Development</a></li>
+              <li><a class="dropdown-item" href="#">UI/UX Design</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Consulting</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/pages/contact.html">Contact</a>
+          </li>
+        </ul>
+  
+        <!-- Profile Dropdown -->
+        <div class="dropdown ms-3">
+          <button class="btn btn-light dropdown-toggle px-3" type="button" id="profileDropdown" data-bs-toggle="dropdown">
+            <i class="bi bi-person-circle"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square me-2"></i>Edit Profile</a></li>
+            <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Settings</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <a class="dropdown-item text-danger" href="#" id="logoutBtn">
+                <i class="bi bi-box-arrow-right me-2"></i> Logout
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
+  </nav>
+  
+  <div class="container my-3">
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <input type="text" class="form-control" placeholder="Search memories...">
+      </div>
+      <div class="col-md-3">
+        <select class="form-select">
+          <option selected>Filter by Date</option>
+          <option value="1">Last 7 Days</option>
+          <option value="2">Last 30 Days</option>
+          <option value="3">Older</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <select class="form-select">
+          <option selected>Filter by Tag</option>
+          <option value="1">Travel</option>
+          <option value="2">Family</option>
+          <option value="3">Friends</option>
+        </select>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <button class="btn btn-lg show-modal btn-hover-effect" data-toggle="modal" data-target="#myModal" id="addMemoryBtn">
+        <i class="fas fa-plus me-2"></i>Capture Moment
+      </button>
+    </div>
+    <!-- <header class="d-flex justify-content-end">
+      <button id="addMemoryBtn" class="btn btn-lg show-modal" data-toggle="modal" data-target="#myModal" >Capture Moment</button>
+    </header> -->
+    <hr>
+
+    <div class="row py-2 justify-content-center" id="galleryContainer">
+      <div class="col-lg-4 col-sm-6 col-12 p-2">
+        <div class="main border rounded p-3 hover-scale shadow-lg">
+          <div class="thumbnail img-responsive position-relative overflow-hidden">
+            <a href="#" title="Image 1">
+              <img class="img-fluid img-thumbnail" src="https://hpnhxannetfthfsdcehp.supabase.co/storage/v1/object/public/sharedMemories/24">
+            </a>
+          </div>
+          <h5 class="mt-3 text-primary fw-bold">Title Goes Here</h5>
+          <p class="text-muted">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur sequi omnis id odit. Optio, quis.</p>
+          <div class="reaction_btn d-flex justify-content-between align-items-center">
+            <button class="reaction like-btn">👍 <span class="like-count">0</span></button>
+            <button class="reaction dislike-btn">👎 <span class="dislike-count">0</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
     <div class="row py-2 justify-content-center">
       <div class="col-md-12">
         <div class="modal-box">
@@ -132,17 +217,70 @@
                 <div class="modal-body">
 
                   <div class="form-group">
-                    <label for="memoryImg">Add photo</label>
-                    <input type="file" id="memoryImg" class="form-control">
-                    <small class="text-danger" id="noFilesMsg">kindly add file !</small>
-                    <label class="mt-1 d-block" for="memoryTitle">Add Title</label>
-                    <input type="text" id="memoryTitle" class="form-control">
-                    <small class="text-danger" id="noTitleMsg">kindly add title !</small>
+                    <div class="mb-3">
+                      <label for="memoryTitle" class="form-label">Title</label>
+                      <input type="text" class="form-control" id="memoryTitle" placeholder="Enter title">
+                      <small class="text-danger" id="noTitleMsg">kindly add title !</small>
+                    </div>
+                    <div class="mb-3">
+                      <label for="memoryDescription" class="form-label">Description</label>
+                      <textarea class="form-control" id="memoryDescription" rows="3" placeholder="Enter description"></textarea>
+                    </div>
+                    <div class="mb-3">
+                      <label for="memoryTags" class="form-label">Tags</label>
+                      <input type="text" class="form-control" id="memoryTags" placeholder="Enter tags (e.g., Travel, Family)">
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="memoryImg" class="form-label">Upload Image</label>
+                      <input type="file" class="form-control" id="memoryImg">
+                      <small class="text-danger" id="noFilesMsg">kindly add file !</small>
+                    </div>
+                    <!-- <label for="memoryImg">Add photo</label>
+                    <input type="file" id="memoryImg" class="form-control"> -->
+                    <!-- <label class="mt-1 d-block" for="memoryTitle">Add Title</label>
+                    <input type="text" id="memoryTitle" class="form-control"> -->
                   </div>
-                  <button class="btn" id="addMemory">Add Memory</button>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="addMemory">Save Memory</button>
+                  </div>
+                  <!-- <button class="btn" id="addMemory">Add Memory</button> -->
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+  </div>
+
+  <div class="statistics-section bg-light py-5">
+    <div class="container">
+      <h3 class="mb-4 fw-bold">Your Activity</h3>
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+          <div class="card h-100 text-center py-4">
+            <i class="fas fa-images fa-3x mb-3 text-primary"></i>
+            <h4 class="fw-bold">50</h4>
+            <p class="mb-0">Memories Uploaded</p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100 text-center py-4">
+            <i class="fas fa-share-alt fa-3x mb-3 text-primary"></i>
+            <h4 class="fw-bold">120</h4>
+            <p class="mb-0">Memories Shared</p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100 text-center py-4">
+            <i class="fas fa-heart fa-3x mb-3 text-primary"></i>
+            <h4 class="fw-bold">300</h4>
+            <p class="mb-0">Likes Received</p>
           </div>
         </div>
       </div>
@@ -153,9 +291,12 @@
   <script type="module" src="../js/config.js"></script>
   <script type="module" src="../js/gallery.js"></script>
   <script type="module" src="../js/app.js"></script>
-  <!-- <script type="module" src="../js/script.js"></script> -->
+  <script type="module" src="../js/dashboard.js"></script>
 
   <!--  bootstrap js cdn -->
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"

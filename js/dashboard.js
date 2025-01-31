@@ -15,6 +15,7 @@ const logoutUser = async () => {
   }
 
   const { data, error } = await supabase.auth.signOut();
+  
 
   if (error) {
     console.error("Error signing out:", error);
@@ -95,9 +96,13 @@ async function showUserInfo() {
 window.onload = showUserInfo
 
 const user_profile = document.getElementById('user-profile');
-user_profile.style.cursor = 'pointer';
-user_profile.style.display = 'inline-block';
+if (user_profile) {
+  user_profile.style.cursor = 'pointer';
+  user_profile.style.display = 'inline-block';
+  user_profile.addEventListener('click', () => {
+    window.location.href = 'profile_with_photos_and_posts.html'
+  
+  })
 
-user_profile.addEventListener('click', () => {
-  window.location.href = 'profile_with_photos_and_posts.html'
-})
+}  
+
