@@ -48,6 +48,7 @@ let userSignup = async (e) => {
         signupName.value = "";
         signupEmail.value = "";
         signupPass.value = "";
+        signupImg.src = " ";
     return
   }
 
