@@ -5,6 +5,21 @@
 } */
 body{
   width: 100%;
+  background: #155d954f !important;
+}
+.gallery_cards{
+  transition: all .5s linear;
+}
+.gallery_cards:hover{
+  transform: scale(1.05);
+
+}
+.delete_btn{
+  background-color: #d43030 !important;
+  color: #fff !important;
+}
+.like_btn{
+  background-color: #99c4d4 !important;
 }
 
 .container h1 {
@@ -17,7 +32,7 @@ body{
 
 #addMemoryBtn {
   color: #fff;
-    background: #ff773a;
+    background: #9ACBD0;
     font-size: 18px;
     font-weight: 600;
     text-transform: capitalize;
@@ -61,7 +76,7 @@ hr {
 
 .modal-box .show-modal {
   color: #fff;
-  background-color: #ff773a;
+  background-color: #9ACBD0;
   font-size: 18px;
   font-weight: 600;
   text-transform: capitalize;
@@ -166,7 +181,7 @@ hr {
 
 .modal-box .modal-dialog .modal-content .modal-body .btn {
   color: #fff;
-  background: #ff773a;
+  background: #9ACBD0;
   font-size: 18px;
   font-weight: 600;
   text-transform: capitalize;
