@@ -1,7 +1,3 @@
-
-
-      // ------------------------------------------------
-// =======
 const galleryContainer = document.querySelector("#galleryContainer");
 const closeModal = document.querySelector(".closeModal");
 
@@ -291,5 +287,4 @@ async function deleteMemory(memoryId) {
 }
 
       // ------------------------------------------------
-
       
