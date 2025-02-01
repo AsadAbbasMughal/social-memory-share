@@ -36,28 +36,33 @@ const showMemoriesData = async () => {
               activeUserPost = true;
             }
             // console.log(activeUserPost)
-            galleryContainer.innerHTML += `<div class="col-lg-4 col-md-4 col-sm-6 col-5  p-3 gallery_cards">
-        <div class="main border rounded p-2">
-          <div class="thumbnail img-responsive border">
-            <a href="#" title="Image 1"><img class="img-fluid " 
-                src="${memory.imageUrl}">
-            </a>
-          </div>
-          <h5>${memory.title}</h5>
-          <div class="reaction_btn d-flex justify-content-between">
-           
-            <button  class="btn btn-info like_btn px-3" onClick="likeMemory('${
-              memory.id
-            }','${activeUser.userId}')">👍<span>9</span></button>
-            
-            ${
-              activeUserPost
-                ? "<button class='btn delete_btn'>Delete </button>"
-                : ""
-            }
-          </div>
-        </div>
-      </div>`;
+           galleryContainer.innerHTML += `
+  <div class="col-lg-4 col-md-4 col-sm-6 col-5 p-3 gallery_cards">
+    <div class="main border rounded">
+      <div class="thumbnail img-responsive border">
+        <a href="#" title="Image 1">
+          <img class="card-img-top" src="${memory.imageUrl}" alt="${
+             memory.title
+           }">
+        </a>
+      </div>
+      <h6 class="px-2 lead">${memory.title}</h6>
+      <div class="reaction_btn d-flex justify-content-between px-2 pb-3">
+        <button class="btn btn-info like_btn px-3" onClick="likeMemory('${
+          memory.id
+        }','${activeUser.userId}')">
+          👍<span class='ps-2'>9</span>
+        </button>
+        ${
+          activeUserPost
+            ? `<button class="btn delete_btn" onClick="deleteMemory('${activeUser.userId}','${memory.id}')">Delete</button>`
+            : ""
+        }
+      </div>
+    </div>
+  </div>`;
+
+
           });
         }
       } catch (error) {}
@@ -241,3 +246,49 @@ const likeMemory = async (memoryId, userId) => {
 };
 
 window.likeMemory = likeMemory;
+  
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++==
+
+
+const deleteMemory = (userId,memoryId)=>{
+  console.log(userId),
+  console.log(memoryId)
+
+
+  Swal.fire({
+    title: "Do you want to delete this memory?",
+    showCancelButton: true,
+    confirmButtonText: "Delete",
+    confirmButtonColor: "#d33", 
+    cancelButtonColor: "#3085d6",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        const { data, error } = await supabase.storage
+          .from("sharedMemories")
+          .remove([memoryId]);
+
+        if (error) throw error;
+
+        if (data) {
+          console.log(data);
+          try {
+            const response = await supabase
+              .from("memories")
+              .delete()
+              .eq("id", memoryId);
+
+            showMemoriesData();
+          } catch (error) {}
+        }
+      } catch (error) {}
+    } else if (result.isDenied) {
+      Swal.fire("Changes are not saved", "", "info");
+    }
+  });
+ 
+}
+
+
+window.deleteMemory = deleteMemory;
