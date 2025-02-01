@@ -1,3 +1,7 @@
+
+
+      // ------------------------------------------------
+// =======
 const galleryContainer = document.querySelector("#galleryContainer");
 const closeModal = document.querySelector(".closeModal");
 
@@ -13,6 +17,7 @@ const showMemoriesData = async () => {
         const { data : usersData, error : usersError } = await supabase.from("users").select();
         if(usersError) throw usersError;
         if(usersData){
+          // console.log(usersData)
           const usersMap = {};
           usersData.forEach((user)=>{
             usersMap[user.userId] = user;
@@ -176,6 +181,14 @@ const checkSession = async () => {
     if (user) {
       console.log(user);
       try {
+        // const { data, error } = await supabase
+        //   .from("users")
+        //   .select()
+        //   .eq(;
+        //   if(error) throw error;
+        //   if(data){
+        //     console.log(data)
+        //   }
         const { data, error } = await supabase
           .from("users")
           .select("email, userId, name")
@@ -188,6 +201,7 @@ const checkSession = async () => {
             email: data[0].email,
             userId: data[0].userId,
           };
+          // console.log(activeUserData);
           localStorage.setItem(
             "activeUserData",
             JSON.stringify(activeUserData)
@@ -277,4 +291,5 @@ async function deleteMemory(memoryId) {
 }
 
       // ------------------------------------------------
+
       

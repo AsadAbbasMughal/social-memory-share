@@ -22,7 +22,7 @@ const logoutUser = async () => {
   }
 };
 
-//  Delete User Account
+// ✅ Delete User Account
 const deleteUserAcc = async () => {
   try {
     const { data: { user }, error: userError } = await supabase.auth.getUser();
