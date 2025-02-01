@@ -8,65 +8,71 @@ const showMemoriesData = async () => {
     const { data, error } = await supabase.from("memories").select();
     if (error) throw error;
     if (data) {
-      console.log(data);
+      console.log('Memory Data:', data);
       try {
-        const { data : usersData, error : usersError } = await supabase.from("users").select();
-        if(usersError) throw usersError;
-        if(usersData){
-          // console.log(usersData)
+        const { data: usersData, error: usersError } = await supabase.from("users").select();
+        if (usersError) throw usersError;
+        if (usersData) {
           const usersMap = {};
-          usersData.forEach((user)=>{
+          usersData.forEach((user) => {
             usersMap[user.userId] = user;
-          })
-          console.log(data);
-          console.log(usersMap)
-          galleryContainer.innerHTML = ""
-          console.log(data)
-          data.forEach((newData) => {
-            console.log(newData);
           });
-          console.log(data);
-          data.forEach((memory)=>{
+          console.log('Users Map:', usersMap);
+
+          galleryContainer.innerHTML = "";
+
+          data.forEach((memory) => {
             let activeUser = usersMap[memory.userId];
-            console.log(activeUser)
+            if (!activeUser) {
+              console.log(`User with userId ${memory.userId} not found in usersMap`);
+              return;
+            }
+
+            console.log('Active User:', activeUser);
+
             let activeUserPost = false;
-            if(activeUser.userId === activeUserData.userId){
+            if (activeUser.userId === activeUserData.userId) {
               activeUserPost = true;
             }
-            console.log(activeUserPost)
+            console.log('Active User Post:', activeUserPost);
+
+            if (!memory.imageUrl) {
+              console.error(`Image URL for memory with id ${memory.id} is not defined`);
+              return;
+            }
+
             galleryContainer.innerHTML += `
-            <div class="col-lg-4 col-sm-6 col-12 p-2">
-    <div class="main border rounded p-3 hover-scale shadow-lg">
-      <div class="thumbnail img-responsive position-relative overflow-hidden">
-        <a href="#" title="${memory.title}">
-          <img class="img-fluid img-thumbnail" src="${memory.imageUrl}">
-        </a>
-      </div>
-      <div class="content"> <!-- Flexible Content Wrapper -->
-        <h5 class="mt-3 text-primary fw-bold">${memory.title}</h5>
-        <p class="text-muted">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-      </div>
-      <div class="reaction_btn d-flex justify-content-between align-items-center mt-auto">
-        <button class="reaction like-btn" data-id="${memory.id}">👍 <span class="like-count">0</span></button>
-        <button class="reaction dislike-btn" data-id="${memory.id}">👎 <span class="dislike-count">0</span></button>
-        ${activeUserPost ? 
-          "<button class='btn btn-danger delete-btn' data-id='" + memory.id + "'>X</button>" : ""}
-      </div>
-    </div>
-  </div>
-
-      `;
-          })
+              <div class="col-lg-4 col-sm-6 col-12 p-2">
+                <div class="main border rounded p-3 hover-scale shadow-lg">
+                  <div class="thumbnail img-responsive position-relative overflow-hidden">
+                    <a href="#" title="${memory.title}">
+                      <img class="img-fluid img-thumbnail" src="${memory.imageUrl}">
+                    </a>
+                  </div>
+                  <div class="content">
+                    <h5 class="mt-3 text-primary fw-bold">${memory.title}</h5>
+                    <p class="text-muted">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                  </div>
+                  <div class="reaction_btn d-flex justify-content-between align-items-center mt-auto">
+                    <button class="reaction like-btn" data-id="${memory.id}">👍 <span class="like-count">0</span></button>
+                    <button class="reaction dislike-btn" data-id="${memory.id}">👎 <span class="dislike-count">0</span></button>
+                    ${activeUserPost ? 
+                      "<button class='btn btn-danger delete-btn' data-id='" + memory.id + "'>X</button>" : ""}
+                  </div>
+                </div>
+              </div>
+            `;
+          });
         }
-
       } catch (error) {
-        
+        console.error('Error fetching users:', error);
       }
     }
   } catch (error) {
-    console.log(error);
+    console.error('Error fetching memories:', error);
   }
 };
+
 
 
 const addMemoryBtn = document.querySelector("#addMemoryBtn");

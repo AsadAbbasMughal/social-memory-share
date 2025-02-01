@@ -1,6 +1,7 @@
 const container = document.getElementById("container");
 const registerBtn = document.getElementById("register");
 const loginBtn = document.getElementById("login");
+const loader = document.getElementById("loader");
 
 registerBtn.addEventListener("click", () => {
   container.classList.add("active");
@@ -23,43 +24,44 @@ let signinBtn = document.querySelector("#signinBtn");
 
 let userSignup = async (e) => {
   e.preventDefault();
+
+  // Show loader before starting the sign-up process
+  loader.style.display = "block";
+
   let name = signupName.value;
   let email = signupEmail.value;
   let pass = signupPass.value;
-  let uploadedFile = signupImg.files[0]
-  let filePath =`public/${encodeURIComponent(uploadedFile.name)}`
+  let uploadedFile = signupImg.files[0];
+  let filePath = `public/${encodeURIComponent(uploadedFile.name)}`;
 
   const { data: existingUser, error: existingError } = await supabase
-  .from("users")
-  .select("email")
-  .eq("email", email)
-  .single();
+    .from("users")
+    .select("email")
+    .eq("email", email)
+    .single();
 
-   
+  if (existingUser) {
+    console.log('User already signed up --->', existingUser);
+    Swal.fire('User already signed up');
 
-    // if (existingError && existingError.code !== "PGRST116") {  // Ignore if no row found
-    //     console.log("Error fetching user:", existingError);
-    //     return;
-    //   }
-  if(existingUser){
-    console.log('user already signup --->' , existingUser);
-    Swal.fire('user already signup');
+    // Hide loader after process completes
+    loader.style.display = "none";
 
-        signupName.value = "";
-        signupEmail.value = "";
-        signupPass.value = "";
-        signupImg.src = " ";
-    return
+    signupName.value = "";
+    signupEmail.value = "";
+    signupPass.value = "";
+    signupImg.value = "";
+    return;
   }
 
-  //signup user
+  if (!name || !email || !pass || !signupImg) {
+    Swal.fire("Please enter all fields!");
+    console.log("Enter all fields!");
 
-  if(!name || !email || !pass || !signupImg){
-      Swal.fire("Enter the all fields!");
-      console.log("Enter the all fields!");
-      return
-      
-    }
+    // Hide loader after process completes
+    loader.style.display = "none";
+    return;
+  }
 
   const { data, error } = await supabase.auth.signUp({
     email: email,
@@ -67,42 +69,40 @@ let userSignup = async (e) => {
   });
 
   if (error) {
-    console.log("Error signup --->", error.message);
+    console.log("Error during sign-up --->", error.message);
     Swal.fire(error.message);
+
+    // Hide loader after process completes
+    loader.style.display = "none";
     return;
   }
 
-  //   if(!error){
-  // console.log(data.user.id);
-
-  // const avatarFile = event.target.files[0]
-const { data: userImgData , error: userImgError } = await supabase
-  .storage
-  .from('userImg')
-  .upload(filePath, uploadedFile, {
-    cacheControl: '3600',
-    upsert: false
-  })
+  const { data: userImgData, error: userImgError } = await supabase
+    .storage
+    .from('userImg')
+    .upload(filePath, uploadedFile, {
+      cacheControl: '3600',
+      upsert: false
+    });
 
   if (userImgError) {
     console.error('Error uploading image:', userImgError);
-  } else {
-    console.log('Image uploaded successfully:', userImgData)
+    loader.style.display = "none";  // Hide loader on error
+    return;
+  }
 
-
-  const { data: getUrlData,  error: urlError } = supabase
-  .storage
-  .from('userImg')
-  .getPublicUrl(filePath);
+  const { data: getUrlData, error: urlError } = supabase
+    .storage
+    .from('userImg')
+    .getPublicUrl(filePath);
 
   if (urlError) {
     console.error('Error getting public URL:', urlError);
-  } else {
-    console.log('Public URL:',  getUrlData.publicUrl);
-    // You can now save this public URL to your user table or do other operations.
- 
+    loader.style.display = "none";  // Hide loader on error
+    return;
+  }
 
-  const { data: usersData, Dataerror: usersError } = await supabase
+  const { data: usersData, error: usersError } = await supabase
     .from("users")
     .insert({
       userId: data.user.id,
@@ -110,74 +110,62 @@ const { data: userImgData , error: userImgError } = await supabase
       email: email,
       imgUrl: getUrlData.publicUrl
     })
-    .select(); 
+    .select();
 
   if (usersError) {
-    console.log("userError ", usersError);
+    console.log("User error:", usersError);
+    loader.style.display = "none";  // Hide loader on error
     return;
   }
-  if (usersData) {
-    console.log(usersData);
-    console.log("users data ", usersData[0].name);
-  }
-}
 
+  console.log(usersData);
+  Swal.fire("Sign-up successful!");
 
-
-}
-  // let currentuserData = {
-  //   userName : usersData[0].name,
-  //   userEmial : usersData[0].email
-  // }
-
-  // localStorage.setItem("currentUser",JSON.stringify(currentuserData))
-
-  if (data) {
-    console.log("data signup --->", data);
-    Swal.fire("signUp successfully!");
-    // return
-  }
+  // Hide loader after sign-up is complete
+  loader.style.display = "none";
 
   signupName.value = "";
   signupEmail.value = "";
   signupPass.value = "";
 };
 
+const userSignIn = async (e) => {
+  e.preventDefault();
 
-const userSignIn =async (e) =>{
-    e.preventDefault()
-    let signinEmailValue = signinEmail.value;
-    let signinpassValue = signinPass.value;
+  // Show loader before starting the sign-in process
+  loader.style.display = "block";
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-        email: signinEmailValue,
-        password: signinpassValue,
-      })
+  let signinEmailValue = signinEmail.value;
+  let signinpassValue = signinPass.value;
 
-      if(error){
-        console.log('signin error', error.message);
-        Swal.fire("Signin error", error.message);
-        return
-        
-      }
-      if(data){
-        console.log('signin data', data);
-        Swal.fire("signIn successfully!");
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: signinEmailValue,
+    password: signinpassValue,
+  });
 
-        localStorage.setItem('currentuserEmail',signinEmailValue)
-        window.location.href = '../pages/dashboard.html'
-        
-      }
+  if (error) {
+    console.log('Sign-in error:', error.message);
+    Swal.fire("Sign-in error", error.message);
 
+    // Hide loader after process completes
+    loader.style.display = "none";
+    return;
+  }
 
-      
-      signinEmail.value = "";
-      signinPass.value = "";
-      
-}
+  if (data) {
+    console.log('Sign-in data:', data);
+    Swal.fire("Sign-in successful!");
+
+    localStorage.setItem('currentuserEmail', signinEmailValue);
+    window.location.href = '../pages/dashboard.html';
+  }
+
+  // Hide loader after sign-in is complete
+  loader.style.display = "none";
+
+  signinEmail.value = "";
+  signinPass.value = "";
+};
 
 signupBtn.addEventListener("click", userSignup);
 signinBtn.addEventListener("click", userSignIn);
-
-
-// ----------------------------------------------------------------------

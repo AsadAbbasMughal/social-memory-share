@@ -85,6 +85,9 @@
     flex-direction: column;
     justify-content: space-between; /* Ensures buttons stay at the bottom */
 }
+#welcomeUser {
+    text-transform: uppercase;
+}
 
 
     </style>
@@ -92,13 +95,14 @@
 
 <body>
 
-   <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
     <div class="container">
-       <!-- User Profile Image & Name  -->
+      <!-- User Profile Image & Name -->
       <a class="navbar-brand d-flex align-items-center" href="#">
-        <img id="userImg" src="" alt="User Profile" class="rounded-circle border border-light me-2"
-          style="width: 45px; height: 45px; object-fit: cover;">
-        <span id="welcomeUser" class="fw-bold text-light">Welcome, Asad!</span>
+        <img id="userImg" src="" alt="User Profile" class="rounded-circle me-2"
+     style="width: 45px; height: 45px; object-fit: cover; border: 3px solid white !important;">
+
+        <span id="welcomeUser" class="fw-bold text-light"></span>
       </a>
   
       <!-- Navbar Toggler for Mobile -->
@@ -106,32 +110,15 @@
         <span class="navbar-toggler-icon"></span>
       </button>
   
-      <!-- Navbar Links & Profile Dropdown  -->
+      <!-- Navbar Links & Profile Dropdown -->
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link active" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/pages/about.html">About</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown">
-              Services
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Web Development</a></li>
-              <li><a class="dropdown-item" href="#">UI/UX Design</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Consulting</a></li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/pages/contact.html">Contact</a>
+            <a class="nav-link active" href="/index.html">Home</a>
           </li>
         </ul>
   
-        <!-- Profile Dropdown  -->
+        <!-- Profile Dropdown -->
         <div class="dropdown ms-3">
           <button class="btn btn-light dropdown-toggle px-3" type="button" id="profileDropdown" data-bs-toggle="dropdown">
             <i class="bi bi-person-circle"></i>
@@ -149,7 +136,7 @@
         </div>
       </div>
     </div>
-  </nav> 
+  </nav>
   
   <div class="container my-3">
     <div class="row mb-4">

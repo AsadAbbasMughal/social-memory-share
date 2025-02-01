@@ -1,4 +1,3 @@
-
 const {createClient} = supabase;
 
 const supabaseUrl = 'https://hpnhxannetfthfsdcehp.supabase.co'
@@ -7,5 +6,6 @@ const supabaseCreate = createClient(supabaseUrl, supabaseKey)
 
 window.supabase = supabaseCreate;
 
-// console.log(supabase); 
+console.log(supabase); 
+
 
