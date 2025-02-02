@@ -32,7 +32,20 @@ let userSignup = async (e) => {
   let email = signupEmail.value;
   let pass = signupPass.value;
   let uploadedFile = signupImg.files[0];
-  let filePath = `public/${encodeURIComponent(uploadedFile.name)}`;
+
+  // Issue: The filePath is constructed using encodeURIComponent, but filenames with special characters (e.g., ~, —) can still cause issues.
+  // Fix: Sanitize the filename to remove special characters and spaces:
+  const sanitizeFilename = (filename) => {
+    return filename
+      .replace(/[~—]/g, '')        // Remove ~ and —
+      .replace(/\s+/g, '_')        // Replace spaces with underscores
+      .toLowerCase();
+  };
+
+  const sanitizedFileName = sanitizeFilename(uploadedFile.name);
+  const filePath = `public/${sanitizedFileName}`;
+
+  // let filePath = `public/${encodeURIComponent(uploadedFile.name)}`; // Issue: Special characters in filename can cause issues
 
   const { data: existingUser, error: existingError } = await supabase
     .from("users")
@@ -41,16 +54,14 @@ let userSignup = async (e) => {
     .single();
 
   if (existingUser) {
+    
     console.log('User already signed up --->', existingUser);
     Swal.fire('User already signed up');
 
     // Hide loader after process completes
     loader.style.display = "none";
 
-    signupName.value = "";
-    signupEmail.value = "";
-    signupPass.value = "";
-    signupImg.value = "";
+   resetForm();
     return;
   }
 
@@ -87,6 +98,8 @@ let userSignup = async (e) => {
 
   if (userImgError) {
     console.error('Error uploading image:', userImgError);
+    await supabase.auth.admin.deleteUser(data.user.id); // Delete the user if DB insert fails
+    Swal.fire('Error uploading image. Please try again.');
     loader.style.display = "none";  // Hide loader on error
     return;
   }
@@ -124,9 +137,7 @@ let userSignup = async (e) => {
   // Hide loader after sign-up is complete
   loader.style.display = "none";
 
-  signupName.value = "";
-  signupEmail.value = "";
-  signupPass.value = "";
+resetForm();
 };
 
 const userSignIn = async (e) => {
@@ -165,6 +176,13 @@ const userSignIn = async (e) => {
 
   signinEmail.value = "";
   signinPass.value = "";
+};
+// reset form
+const resetForm = () => {
+  signupName.value = "";
+  signupEmail.value = "";
+  signupPass.value = "";
+  signupImg.value = "";
 };
 
 signupBtn.addEventListener("click", userSignup);
