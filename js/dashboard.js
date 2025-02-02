@@ -61,7 +61,7 @@ async function showUserInfo() {
 
     if (data.length > 0) {
       data.forEach(user => {
-        console.log("Checking:", user.email, "vs", currentuserEmail);
+        // console.log("Checking:", user.email, "vs", currentuserEmail);
 
         if (user.email === currentuserEmail) {
           console.log("User Matched:", user.name);

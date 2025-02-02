@@ -37,6 +37,13 @@
       margin-bottom: 10px;
       display: flex;
       flex-wrap: wrap;
+      height: 300px;
+    }
+    #galleryContainer img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
     }
     
     
