@@ -183,7 +183,7 @@ const userSignIn = async (e) => {
     Swal.fire("Sign-in successful!");
 
     localStorage.setItem('currentuserEmail', signinEmailValue);
-    window.location.href = '../pages/dashboard.html';
+    window.location.href = '/pages/dashboard.html';
   }
 
   // Hide loader after sign-in is complete
