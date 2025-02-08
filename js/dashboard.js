@@ -97,3 +97,8 @@ if (deleteBtn) deleteBtn.addEventListener("click", deleteUserAcc);
 
 
 document.addEventListener("DOMContentLoaded", showUserInfo);
+
+// -----------------------------------
+window.userProfilePage = function () {
+  window.location.href = "/pages/profilePage.html ";
+};    
