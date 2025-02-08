@@ -100,5 +100,10 @@ document.addEventListener("DOMContentLoaded", showUserInfo);
 
 // -----------------------------------
 window.userProfilePage = function () {
-  window.location.href = "/pages/profilePage.html ";
+  console.log(currentuserEmail);
+  
+ 
+
+
+  // window.location.href = "/pages/profilePage.html ";
 };    

@@ -33,6 +33,22 @@ let userSignup = async (e) => {
   let pass = signupPass.value;
   let uploadedFile = signupImg.files[0];
 
+  if (!name || !email || !pass || !uploadedFile) {
+    let missingFields = [];
+
+    if (!name) missingFields.push("Name");
+    if (!email) missingFields.push("Email");
+    if (!pass) missingFields.push("Password");
+    if (!uploadedFile) missingFields.push("Picture");
+
+    Swal.fire(`Please enter: ${missingFields.join(", ")}`);
+
+    // Hide loader after process completes
+    loader.style.display = "none";
+    return;
+}
+
+
   // Issue: The filePath is constructed using encodeURIComponent, but filenames with special characters (e.g., ~, —) can still cause issues.
   // Fix: Sanitize the filename to remove special characters and spaces:
   const sanitizeFilename = (filename) => {
@@ -65,14 +81,13 @@ let userSignup = async (e) => {
     return;
   }
 
-  if (!name || !email || !pass || !signupImg) {
-    Swal.fire("Please enter all fields!");
-    console.log("Enter all fields!");
-
-    // Hide loader after process completes
-    loader.style.display = "none";
-    return;
-  }
+  
+//   if (!uploadedFile) {
+//     Swal.fire("Please upload an image!");
+//     loader.style.display = "none";
+//     return;
+// }
+  
 
   const { data, error } = await supabase.auth.signUp({
     email: email,
