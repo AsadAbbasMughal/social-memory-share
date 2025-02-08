@@ -105,5 +105,5 @@ window.userProfilePage = function () {
  
 
 
-  // window.location.href = "/pages/profilePage.html ";
+  window.location.href = "/pages/profilePage.html ";
 };    
